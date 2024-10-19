@@ -144,7 +144,7 @@ public class UIManager : MonoBehaviour
             {
                 Debug.Log(scroll);
                 Camera.main.fieldOfView -= scroll * 5f; //Smooth movement
-                                                        //suitable range, not too close and far enoguh that the whole level is in view.
+                //suitable range, not too close and far enoguh that the whole level is in view.
                 Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 20f, 100f);
             }
         }   
