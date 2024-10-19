@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform crosshair;
     [SerializeField] private Transform target;
 
-    public LayerMask Walls;
+    public LayerMask wallsLayer;
 #endregion
 
 #region Singleton
@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     private InputAction mouseAction;
     private InputAction deltaAction;
     private InputAction selectAction;
+    private InputAction zoomAction;
 #endregion
 
 #region Events
@@ -57,6 +58,8 @@ public class UIManager : MonoBehaviour
         deltaAction = actions.mouse.delta;
         selectAction = actions.mouse.select;
 
+        zoomAction = actions.camera.zoom;
+
         Cursor.visible = false;
         target.gameObject.SetActive(false);
     }
@@ -64,11 +67,13 @@ public class UIManager : MonoBehaviour
     void OnEnable()
     {
         actions.mouse.Enable();
+        actions.camera.Enable();
     }
 
     void OnDisable()
     {
         actions.mouse.Disable();
+        actions.camera.Disable();
     }
 #endregion Init
 
@@ -77,7 +82,7 @@ public class UIManager : MonoBehaviour
     {
         MoveCrosshair();
         SelectTarget();
-
+        CameraZoom();
        
     }
 
@@ -93,7 +98,7 @@ public class UIManager : MonoBehaviour
         float distance = float.PositiveInfinity;
         RaycastHit hit;
         Vector3 hitpoint = Vector3.zero;
-        if (Physics.Raycast(cameraRay, out hit, distance, Walls))
+        if (Physics.Raycast(cameraRay, out hit, distance, wallsLayer))
         {
             distance = hit.distance;
             hitpoint = hit.point;
@@ -116,6 +121,33 @@ public class UIManager : MonoBehaviour
             target.position = crosshair.position;     
             TargetSelected?.Invoke(target.position);       
         }
+    }
+
+    private void CameraZoom()
+    {
+        float scroll = zoomAction.ReadValue<float>()/120f; 
+        // Why is this value 120 or -120?
+        //get it to 1 or -1 so it just has to know if its scrolling in or out.
+        //like week 10 movement was an axis of -1 or 1.
+
+        if(scroll != 0)
+        {
+            Debug.Log(scroll);
+
+            //Use camera.main so much, just get a variable of it?
+            if (Camera.main.orthographic) //false means its perspective
+            {
+                Camera.main.orthographicSize -= scroll;
+                Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, 1f, 12f);
+            }
+            else
+            {
+                Debug.Log(scroll);
+                Camera.main.fieldOfView -= scroll * 5f; //Smooth movement
+                                                        //suitable range, not too close and far enoguh that the whole level is in view.
+                Camera.main.fieldOfView = Mathf.Clamp(Camera.main.fieldOfView, 20f, 100f);
+            }
+        }   
     }
 
 #endregion Update
