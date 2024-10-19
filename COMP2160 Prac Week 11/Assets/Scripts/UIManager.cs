@@ -20,9 +20,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform target;
 
     public LayerMask wallsLayer;
-#endregion
 
-#region Singleton
+    [SerializeField] private Transform groundTarget;
+    private Plane groundPlane;
+
+    #endregion
+
+    #region Singleton
     static private UIManager instance;
     static public UIManager Instance
     {
@@ -62,6 +66,10 @@ public class UIManager : MonoBehaviour
 
         Cursor.visible = false;
         target.gameObject.SetActive(false);
+
+        Vector3 groundPosition = groundTarget.position + (Vector3.up * 1f);
+        Vector3 groundNormal = groundTarget.up;
+        groundPlane = new Plane(Vector3.up, groundPosition);
     }
 
     void OnEnable()
@@ -80,13 +88,13 @@ public class UIManager : MonoBehaviour
 #region Update
     void Update()
     {
-        MoveCrosshair();
+        MoveCrosshairTwo();
         SelectTarget();
         CameraZoom();
        
     }
 
-    private void MoveCrosshair()
+    private void MoveCrosshairOne()
     {
         //Vector2 mousePos = mouseAction.ReadValue<Vector2>();
         //Debug.Log(mousePos);
@@ -111,6 +119,23 @@ public class UIManager : MonoBehaviour
         //The crosshairs z postisiotn is not constant, does this effect it?
 
     }
+
+    private void MoveCrosshairTwo()
+    {
+        Vector3 mousePosition = new Vector3(mouseAction.ReadValue<Vector2>().x, mouseAction.ReadValue<Vector2>().y, 0);
+        Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+
+        float distance;
+        if (groundPlane.Raycast(cameraRay, out distance))
+        {
+            //Get the point that is clicked
+            Vector3 hitPoint = cameraRay.GetPoint(distance);
+
+            //Move your cube crosshar to the point where you clicked
+            crosshair.position = hitPoint;
+        }
+    }
+
 
     private void SelectTarget()
     {

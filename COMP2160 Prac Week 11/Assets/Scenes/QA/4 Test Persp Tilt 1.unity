@@ -152,6 +152,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5450362575394769019, guid: b96044efa2ae54750ad24e39e1352865,
         type: 3}
+      propertyPath: groundTarget
+      value: 
+      objectReference: {fileID: 1796159791}
+    - target: {fileID: 5450362575394769019, guid: b96044efa2ae54750ad24e39e1352865,
+        type: 3}
       propertyPath: wallsLayer.m_Bits
       value: 64
       objectReference: {fileID: 0}
@@ -773,6 +778,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 191147060}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1796159791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6737843619596989291, guid: 184f488bf1486423baadff9ee0a0bade,
+    type: 3}
+  m_PrefabInstance: {fileID: 1183061768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!20 &2408856355099670849
 Camera:
   m_ObjectHideFlags: 0
@@ -903,8 +914,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4601777957755373507}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 12.15, z: -13.49}
+  m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 11.64, z: -14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
