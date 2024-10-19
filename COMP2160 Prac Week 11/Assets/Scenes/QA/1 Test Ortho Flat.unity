@@ -150,6 +150,11 @@ PrefabInstance:
       propertyPath: Walls.m_Bits
       value: 64
       objectReference: {fileID: 0}
+    - target: {fileID: 5450362575394769019, guid: b96044efa2ae54750ad24e39e1352865,
+        type: 3}
+      propertyPath: groundTarget
+      value: 
+      objectReference: {fileID: 607362148}
     - target: {fileID: 8399291161501472776, guid: b96044efa2ae54750ad24e39e1352865,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -497,6 +502,12 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!4 &607362148 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6737843619596989291, guid: 184f488bf1486423baadff9ee0a0bade,
+    type: 3}
+  m_PrefabInstance: {fileID: 1183061768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +727,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:

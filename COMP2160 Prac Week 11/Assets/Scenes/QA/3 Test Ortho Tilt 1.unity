@@ -152,6 +152,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5450362575394769019, guid: b96044efa2ae54750ad24e39e1352865,
         type: 3}
+      propertyPath: groundTarget
+      value: 
+      objectReference: {fileID: 53051286}
+    - target: {fileID: 5450362575394769019, guid: b96044efa2ae54750ad24e39e1352865,
+        type: 3}
       propertyPath: wallsLayer.m_Bits
       value: 64
       objectReference: {fileID: 0}
@@ -210,6 +215,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b96044efa2ae54750ad24e39e1352865, type: 3}
+--- !u!4 &53051286 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6737843619596989291, guid: 184f488bf1486423baadff9ee0a0bade,
+    type: 3}
+  m_PrefabInstance: {fileID: 1183061768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &345881376
 GameObject:
   m_ObjectHideFlags: 0

@@ -67,8 +67,13 @@ public class UIManager : MonoBehaviour
         Cursor.visible = false;
         target.gameObject.SetActive(false);
 
+        //later the plane position so it sits above the ground layer
+        //since grounds y is -0.5, it needs to get above it.
         Vector3 groundPosition = groundTarget.position + (Vector3.up * 1f);
-        Vector3 groundNormal = groundTarget.up;
+        
+        //Create a new plane with normal (0, 1, 0),
+        //its at the same postion as ground but slightly above
+        //so the marble stops falling throuigh the floor
         groundPlane = new Plane(Vector3.up, groundPosition);
     }
 
