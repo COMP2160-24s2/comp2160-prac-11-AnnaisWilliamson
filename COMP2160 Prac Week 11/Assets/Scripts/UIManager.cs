@@ -18,7 +18,9 @@ public class UIManager : MonoBehaviour
 #region UI Elements
     [SerializeField] private Transform crosshair;
     [SerializeField] private Transform target;
-#endregion 
+
+    public LayerMask Walls;
+#endregion
 
 #region Singleton
     static private UIManager instance;
@@ -75,14 +77,34 @@ public class UIManager : MonoBehaviour
     {
         MoveCrosshair();
         SelectTarget();
+
+       
     }
 
-    private void MoveCrosshair() 
+    private void MoveCrosshair()
     {
-        Vector2 mousePos = mouseAction.ReadValue<Vector2>();
+        //Vector2 mousePos = mouseAction.ReadValue<Vector2>();
+        //Debug.Log(mousePos);
 
         // FIXME: Move the crosshair position to the mouse position (in world coordinates)
-        // crosshair.position = ...;
+        Vector3 mousePosition = new Vector3(mouseAction.ReadValue<Vector2>().x, mouseAction.ReadValue<Vector2>().y, 0);
+        Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+
+        float distance = float.PositiveInfinity;
+        RaycastHit hit;
+        Vector3 hitpoint = Vector3.zero;
+        if (Physics.Raycast(cameraRay, out hit, distance, Walls))
+        {
+            distance = hit.distance;
+            hitpoint = hit.point;
+        }
+        //Debug.Log(hitpoint);
+        
+        crosshair.position = hitpoint;
+       
+        //Crosshair is doing a weird thing where it will disapera under certain tiles
+        //The crosshairs z postisiotn is not constant, does this effect it?
+
     }
 
     private void SelectTarget()
