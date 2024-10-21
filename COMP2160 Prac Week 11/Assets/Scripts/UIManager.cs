@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform groundTarget;
     private Plane groundPlane;
 
+    //Toggle delta on and of in inspector
+    [SerializeField] private bool useDelta = true;
     #endregion
 
     #region Singleton
@@ -93,7 +95,7 @@ public class UIManager : MonoBehaviour
 #region Update
     void Update()
     {
-        MoveCrosshairTwo();
+        MoveCrosshairPlane();
         SelectTarget();
         CameraZoom();
        
@@ -125,20 +127,66 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private void MoveCrosshairTwo()
+    private void MoveCrosshairPlane()
     {
-        Vector3 mousePosition = new Vector3(mouseAction.ReadValue<Vector2>().x, mouseAction.ReadValue<Vector2>().y, 0);
-        Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+        //Vector2 mouseDelta = deltaAction.ReadValue<Vector2>();
+        //Debug.Log(mouseDelta);
 
-        float distance;
-        if (groundPlane.Raycast(cameraRay, out distance))
+        //Delta
+        Vector3 crosshairScreenPos = Camera.main.WorldToScreenPoint(crosshair.position);
+        //Debug.Log(crosshairScreenPos);
+
+        Vector3 crosshairDeltaPos = crosshairScreenPos + new Vector3(deltaAction.ReadValue<Vector2>().x, deltaAction.ReadValue<Vector2>().y, 0);
+        Debug.Log(crosshairDeltaPos);
+
+        if (useDelta)
         {
-            //Get the point that is clicked
-            Vector3 hitPoint = cameraRay.GetPoint(distance);
+            // Convert back to world position from screen
+            Ray cameraRay = Camera.main.ScreenPointToRay(crosshairDeltaPos);
+            float distance;
+            if (groundPlane.Raycast(cameraRay, out distance))
+            {
+                //Get the point that is clicked
+                Vector3 newHitPoint = cameraRay.GetPoint(distance);
 
-            //Move your cube crosshar to the point where you clicked
-            crosshair.position = hitPoint;
+                //Move your crosshair to the point where your mouse is and dont moe
+                //if camera moves
+                crosshair.position = newHitPoint;
+
+                CrosshairRestrict();
+            }
         }
+        else
+        {
+            Vector3 mousePosition = new Vector3(mouseAction.ReadValue<Vector2>().x, mouseAction.ReadValue<Vector2>().y, 0);
+            
+            Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+            float distance;
+            if (groundPlane.Raycast(cameraRay, out distance))
+            {
+                //Get the point that is clicked
+                Vector3 hitPoint = cameraRay.GetPoint(distance);
+
+                //Move your crosshair to the point and polace a target to where it is clicked
+                crosshair.position = hitPoint;
+            }
+        }
+    }
+
+    private void CrosshairRestrict()
+    {
+        //get the dimensions of the screen in a Rect
+        Rect screenRect = new Rect(0, 0, Screen.width, Screen.height);
+
+        //Get crosshair position in the screen coordinates.
+        Vector3 crosshairScreenPos = Camera.main.WorldToScreenPoint(crosshair.position);
+
+        //Constraining the crosshair to the screens min and max x and y values
+        crosshairScreenPos.x = Mathf.Clamp(crosshairScreenPos.x, screenRect.xMin, screenRect.xMax);
+        crosshairScreenPos.y = Mathf.Clamp(crosshairScreenPos.y, screenRect.yMin, screenRect.yMax);
+
+        //convert this screen position of crosshair back to world space with the rect contraints.
+        crosshair.position = Camera.main.ScreenToWorldPoint(crosshairScreenPos);
     }
 
 
