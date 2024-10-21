@@ -137,7 +137,7 @@ public class UIManager : MonoBehaviour
         //Debug.Log(crosshairScreenPos);
 
         Vector3 crosshairDeltaPos = crosshairScreenPos + new Vector3(deltaAction.ReadValue<Vector2>().x, deltaAction.ReadValue<Vector2>().y, 0);
-        Debug.Log(crosshairDeltaPos);
+        //Debug.Log(crosshairDeltaPos);
 
         if (useDelta)
         {
