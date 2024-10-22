@@ -24,7 +24,7 @@ public class FollowerMove : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, 1f); //See the gizmo clearly.
     }
-
+    
     private void FollowTarget()
     {
         if (followOneTarget)
